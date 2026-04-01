@@ -113,8 +113,3 @@ Data yang diproses tersimpan dengan hierarki berikut:
 - `datalake/raw/xlsx/` : hasil pengolahan file Excel lokal
 ```
 
-Kalau kamu mau, aku juga bisa:
-1) bikin versi yang lebih “ringkas” (lebih sedikit narasi, lebih banyak langkah), atau  
-2) bikin versi yang lebih “laporan” (lebih formal + ada tujuan, hasil, dan kesimpulan).
-
-Kamu prefer yang mana?
