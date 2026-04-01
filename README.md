@@ -111,5 +111,3 @@ Data yang diproses tersimpan dengan hierarki berikut:
 - `datalake/raw/rdbms/` : hasil ekstraksi tabel PostgreSQL
 - `datalake/raw/csv/` : hasil pengolahan file CSV lokal
 - `datalake/raw/xlsx/` : hasil pengolahan file Excel lokal
-```
-
