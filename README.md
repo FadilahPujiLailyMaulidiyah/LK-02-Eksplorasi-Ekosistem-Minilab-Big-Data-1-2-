@@ -1,5 +1,5 @@
 
-# LK-02 — Eksplorasi Ekosistem Minilab Big Data 1–2
+# LK-02 — Eksplorasi Ekosistem Minilab Big Data 1/2
 
 **Nama / NIM:** Fadilah Puji Laily Maulidiyah — 245150401111008
 
