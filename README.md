@@ -1,68 +1,120 @@
-# LK-02-Eksplorasi-Ekosistem-Minilab-Big-Data-1-2-
-Fadilah Puji Laily Maulidiyah_245150401111008
 
-1. Prasyarat Sistem
-Sebelum memulai proses, saya memastikan perangkat telah memenuhi kriteria berikut:
-Docker Desktop: Dalam status aktif dan berjalan (running).
-Python 3.10+: Terinstal pada sistem host untuk pengelolaan lingkungan virtual.
-Ketersediaan Port: Memastikan port 5432 (PostgreSQL), 9000 (MinIO API), dan 9001 (MinIO Console) tidak sedang digunakan oleh layanan lain.
+# LK-02 — Eksplorasi Ekosistem Minilab Big Data 1–2
 
-2. Konfigurasi Awal (Setup)
-Saya melakukan inisialisasi lingkungan melalui Windows PowerShell di direktori utama proyek dengan langkah-langkah berikut:
+**Nama / NIM:** Fadilah Puji Laily Maulidiyah — 245150401111008
 
-A. Menyiapkan Environment Variable
-Saya menyalin file template .env.example menjadi .env untuk mengatur kredensial basis data dan storage:
+---
 
-PowerShell
+## 1. Prasyarat Sistem
+
+Sebelum memulai proses, pastikan perangkat memenuhi kriteria berikut:
+
+- **Docker Desktop**: status aktif dan berjalan (*running*).
+- **Python 3.10+**: terinstal pada sistem host untuk pengelolaan *virtual environment*.
+- **Ketersediaan port**: pastikan port berikut tidak digunakan layanan lain:
+  - `5432` (PostgreSQL)
+  - `9000` (MinIO API)
+  - `9001` (MinIO Console)
+
+---
+
+## 2. Konfigurasi Awal (Setup)
+
+Inisialisasi lingkungan dilakukan melalui **Windows PowerShell** pada direktori utama proyek.
+
+### A. Menyiapkan Environment Variable
+
+Salin template `.env.example` menjadi `.env` untuk mengatur kredensial basis data dan storage:
+
+```powershell
 Copy-Item .env.example .env
-B. Menjalankan Infrastruktur Docker
-Saya mengaktifkan layanan PostgreSQL, MinIO, dan MinIO Client di latar belakang menggunakan perintah:
+```
 
-PowerShell
+### B. Menjalankan Infrastruktur Docker
+
+Aktifkan layanan PostgreSQL, MinIO, dan MinIO Client di latar belakang:
+
+```powershell
 docker compose up -d
-Saya menggunakan perintah docker compose ps untuk memastikan seluruh kontainer telah berstatus Healthy.
+```
 
-3. Lingkungan Virtual dan Dependensi
-Untuk menjaga isolasi pustaka Python, saya melakukan konfigurasi lingkungan virtual sebagai berikut:
+Pastikan seluruh kontainer berstatus **Healthy**:
 
-A. Pembuatan Virtual Environment
+```powershell
+docker compose ps
+```
 
-PowerShell
+---
+
+## 3. Virtual Environment dan Dependensi
+
+Untuk menjaga isolasi pustaka Python, lakukan konfigurasi berikut.
+
+### A. Membuat Virtual Environment
+
+```powershell
 python -m venv .venv
-B. Instalasi Dependensi
-Guna menghindari batasan keamanan Execution Policy pada PowerShell, saya menginstal pustaka yang dibutuhkan langsung melalui executable Python di dalam folder .venv:
+```
 
-PowerShell
+### B. Menginstal Dependensi
+
+Untuk menghindari batasan keamanan **Execution Policy** pada PowerShell, instal pustaka menggunakan executable Python di dalam folder `.venv`:
+
+```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-4. Menjalankan Pipeline Ingestion
-Saya mengeksekusi skrip utama untuk menarik data dari PostgreSQL dan file lokal menuju MinIO:
+```
 
-PowerShell
+---
+
+## 4. Menjalankan Pipeline Ingestion
+
+Jalankan skrip utama untuk menarik data dari PostgreSQL dan file lokal menuju MinIO:
+
+```powershell
 .\.venv\Scripts\python.exe -m ingestion.main_ingest
-Proses Ingestion yang Saya Lakukan:
+```
 
-Ekstraksi: Mengambil data dari tabel customers dan orders di PostgreSQL.
+### Tahapan ingestion yang dilakukan
 
-Validasi: Memverifikasi kualitas data menggunakan modul validator.py.
+- **Ekstraksi**: mengambil data dari tabel `customers` dan `orders` di PostgreSQL.
+- **Validasi**: memverifikasi kualitas data menggunakan modul `validator.py`.
+- **Standardisasi**: menambahkan metadata waktu ingestion dan informasi tipe sumber.
+- **Pemuatan**: mengunggah file `.csv` hasil olahan ke bucket `datalake` di MinIO pada zona `raw/`.
 
-Standardisasi: Menambahkan metadata waktu ingestion dan informasi tipe sumber.
+---
 
-Pemuatan: Mengunggah file .csv hasil olahan ke bucket datalake di MinIO pada zona raw/.
+## 5. Verifikasi dan Pengujian
 
-5. Verifikasi dan Pengujian
-A. Verifikasi Melalui MinIO Console
-Saya melakukan pengecekan hasil melalui browser di alamat http://localhost:9001 dengan kredensial minioadmin (sesuai konfigurasi .env). Saya memastikan file telah tersimpan pada bucket datalake/raw/.
+### A. Verifikasi melalui MinIO Console
 
-B. Menjalankan Unit Test
-Saya memastikan logika aplikasi berjalan sesuai spesifikasi dengan menjalankan pengujian otomatis:
+Buka melalui browser:
 
-PowerShell
+- **URL:** `http://localhost:9001`
+- **Kredensial:** `minioadmin` (sesuai konfigurasi `.env`)
+
+Pastikan file sudah tersimpan di bucket `datalake` pada path yang sesuai (misalnya di zona `raw/`).
+
+### B. Menjalankan Unit Test
+
+Jalankan pengujian otomatis untuk memastikan logika aplikasi sesuai spesifikasi:
+
+```powershell
 .\.venv\Scripts\python.exe -m pytest tests/ -v
-6. Struktur Output pada Data Lake
-Data yang saya proses tersimpan dengan hierarki sebagai berikut:
+```
 
-datalake/raw/rdbms/ : Hasil ekstraksi tabel PostgreSQL.
+---
 
-datalake/raw/csv/ : Hasil pengolahan file CSV lokal.
+## 6. Struktur Output pada Data Lake
 
-datalake/raw/xlsx/ : Hasil pengolahan file Excel lokal.
+Data yang diproses tersimpan dengan hierarki berikut:
+
+- `datalake/raw/rdbms/` : hasil ekstraksi tabel PostgreSQL
+- `datalake/raw/csv/` : hasil pengolahan file CSV lokal
+- `datalake/raw/xlsx/` : hasil pengolahan file Excel lokal
+```
+
+Kalau kamu mau, aku juga bisa:
+1) bikin versi yang lebih “ringkas” (lebih sedikit narasi, lebih banyak langkah), atau  
+2) bikin versi yang lebih “laporan” (lebih formal + ada tujuan, hasil, dan kesimpulan).
+
+Kamu prefer yang mana?
