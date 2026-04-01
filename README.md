@@ -3,9 +3,9 @@ Fadilah Puji Laily Maulidiyah_245150401111008
 
 **1. Prasyarat Sistem**
       Sebelum memulai proses, saya memastikan perangkat telah memenuhi kriteria berikut:
-        * **Docker Desktop:** Dalam status aktif dan berjalan (*running*).
-        * **Python 3.10+:** Terinstal pada sistem host untuk pengelolaan lingkungan virtual.
-        * **Ketersediaan Port:** Memastikan port `5432` (PostgreSQL), `9000` (MinIO API), dan `9001` (MinIO Console) tidak sedang digunakan oleh layanan lain.
+      **Docker Desktop:** Dalam status aktif dan berjalan (*running*).
+      **Python 3.10+:** Terinstal pada sistem host untuk pengelolaan lingkungan virtual.
+      **Ketersediaan Port:** Memastikan port `5432` (PostgreSQL), `9000` (MinIO API), dan `9001` (MinIO Console) tidak sedang digunakan oleh layanan lain.
 
 **2. Konfigurasi Awal (Setup)**
       Saya melakukan inisialisasi lingkungan melalui Windows PowerShell di direktori utama proyek dengan langkah-langkah berikut:
